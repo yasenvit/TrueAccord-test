@@ -11,7 +11,7 @@ $ python -m pip install requests
 ## Installation
 * Clone the repo
 ```
-$ https://github.com/yasenvit/TrueAccord-test
+$ git clone https://github.com/yasenvit/TrueAccord-test.git
 ```
 ## Usage
 ```
