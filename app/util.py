@@ -32,17 +32,17 @@ def get_payments(id):
 
 def date_converter(obj):
     '''Function converts date format from date to string or vice versa '''
-    if isinstance(obj, str):  # checking if obj is string
-        # returning converted to date obj if it's string
+    if isinstance(obj, str):  # check if obj is string
+        # return converted to date obj if it's string
         return datetime.strptime(obj, DATE_PATTERN)
-    # returning converted to string obj if it's date
+    # return converted to string obj if it's date
     return datetime.strftime(obj, DATE_PATTERN)
 
 
 def get_payments_info(id):
     '''This function returns dictionary with two key-value pairs:
         sum of all payments and latest_payment date for given ID'''
-    # fetching all payments for given payment_plan_id from API
+    # getting all payments for given payment_plan_id using API
     payments = get_payments(id)
     if not payments:
         return {'total': 0, 'latest_payment': None}
@@ -50,7 +50,7 @@ def get_payments_info(id):
     # calculating sum of all payments and finding latest payment date:
     for payment in payments:
         amount += payment["amount"]
-        # converting string format to date format:
+        # convert string format to date format:
         dates.append(date_converter(payment["date"]))
     return {'total': amount, 'latest_payment': max(dates)}
 
@@ -59,12 +59,12 @@ def get_next_payment(plan, latest_payment):
     '''Function finds next scheduled payment date after latest payment'''
     date_point = date_converter(plan['start_date'])
     if latest_payment is None:
-        # returning start_date from payments plan if no payments
+        # return start_date from payments plan if no previous payments
         return date_point
     frequency = plan['installment_frequency']
-    # assigning payments frequency and finding closest scheduled date after recent payment date
+    # assign payments frequency and find closest scheduled date after recent payment date
     interval = 1 if frequency.upper() == "WEEKLY" else 2
     while latest_payment >= date_point:
         date_point += timedelta(weeks=interval)
-    # returning converted to string next scheduled payment date
+    # return converted to string next scheduled payment date
     return date_converter(date_point)
