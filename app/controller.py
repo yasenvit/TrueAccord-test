@@ -12,8 +12,8 @@ def get_updated_debts():
         # get plan for given debt, using debt ID:
         plan = util.get_plan(debt['id'])
         if not plan:
-            '''Because of plan - adding 'is_in_payment_plan' and 'next_payment_due_date' with False and None 
-                value accordingly. Assign debt['amount'] to added new field debt['remaining_amount']'''
+            '''Plan doesn't exist, therefore add new fields debt['is_in_payment_plan'] and debt['next_payment_due_date']
+            with False and None values accordingly. Assign debt['amount'] to added new field debt['remaining_amount']'''
             debt['is_in_payment_plan'] = False
             debt['next_payment_due_date'] = None
             debt['remaining_amount'] = debt['amount']
@@ -29,14 +29,14 @@ def get_updated_debts():
                 '''Remaining amount is bigger than 0, so that:
                     - assign True to added dept['is_in_payment_plan'],
                     - find latest payment and compare it with payments schedule and get next scheduled date after latest payment. 
-                    - sssign result to added dept['next_payment_due_date'] '''
+                    - assign result to added dept['next_payment_due_date'] '''
                 debt['is_in_payment_plan'] = True
                 latest_payment = get_payments["latest_payment"]
                 debt['next_payment_due_date'] = util.get_next_payment(
                     plan, latest_payment)
             else:
                 '''Debt is paid off, so that adding to debt 'is_in_payment_plan'
-                and 'next_payment_due_date' with False and None value accordingly'''
+                and 'next_payment_due_date' with False and None values accordingly'''
                 debt['is_in_payment_plan'] = False
                 debt['next_payment_due_date'] = None
         # add updated converted with sort feature to json debt to the list
